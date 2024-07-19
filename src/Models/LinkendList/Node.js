@@ -1,6 +1,6 @@
 class Node {
-    constructor(business) {
-        this.business = business;
+    constructor(data) {
+        this.data = data;
         this.next = null;
     }
 }

@@ -1,4 +1,4 @@
-import Node from "./Node";
+import Node from './Node.js';
 
 class LinkedList {
     constructor() {
@@ -6,8 +6,8 @@ class LinkedList {
         this.count = 0;
     }
 
-    push(business) {
-        const node = new Node(business);
+    push(data) {
+        const node = new Node(data);
 
         if (this.head === null) {
             this.head = node;
@@ -35,8 +35,12 @@ class LinkedList {
     size() {
         return this.count;
     }
+
+    isEmpty () {
+        return this.size() === 0
+    }
 }
 
 
 
-export default LinkedList
+export default LinkedList;
