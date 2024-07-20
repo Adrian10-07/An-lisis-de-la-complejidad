@@ -75,6 +75,7 @@ const searchList = (obTyped) => {
     return false;
 }
 
+
 let btnBubble = document.getElementById('btnBubble');
 let btnMerge = document.getElementById('btnMerge');
 let btnRadix = document.getElementById('btnRadix');
@@ -124,7 +125,7 @@ btnMerge.addEventListener('click', () => {
     } else {
         console.log('click');
         mergeSortArray(array);
-        //list.mergeSortLinked(); // Asume que tienes esta función definida para linked list
+        list.mergeSortL(); // Asume que tienes esta función definida para linked list
     }
 });
 
@@ -140,7 +141,7 @@ const mergeSortArray = (array) => {
         const left = array.slice(0, mid);
         const right = array.slice(mid);
 
-        return merge(mergeSort(left), mergeSort(right));
+        return merge(mergeSort(left), merge(mergeSort(right)));
     };
 
     const merge = (left, right) => {
@@ -181,7 +182,6 @@ const mergeSortArray = (array) => {
     return sortedArray;
 };
 
-// Agrega la lógica para Radix Sort aquí, similar a Bubble Sort y Merge Sort, y guarda los tiempos y las iteraciones en localStorage
 
 btnRadix.addEventListener('click', () => {
     if (list.isEmpty() && array.length == 0) {
@@ -189,6 +189,7 @@ btnRadix.addEventListener('click', () => {
     } else {
         console.log('click');
         radixSortArray(array);
+        list.radixSortL();
     }
 });
 
@@ -196,7 +197,6 @@ const radixSortArray = (array) => {
     let iterations = 0;
     let start = Date.now();
 
-    // Función auxiliar para obtener el dígito más significativo
     const getMax = (array) => {
         let max = array[0].review_count;
         for (let i = 1; i < array.length; i++) {
@@ -207,7 +207,6 @@ const radixSortArray = (array) => {
         return max;
     };
 
-    // Función para realizar el counting sort basado en el dígito específico
     const countingSort = (array, exp) => {
         let n = array.length;
         let output = new Array(n);
@@ -256,3 +255,4 @@ const radixSortArray = (array) => {
 
     return sortedArray;
 };
+
