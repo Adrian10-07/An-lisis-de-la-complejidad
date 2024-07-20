@@ -4,14 +4,100 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Algoritmos de Ordenamiento</title>
+    \<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <link rel="stylesheet" href="Style.css">
 </head>
+
 <header>Algoritmos de ordenamiento </header>
+<br>
 <body>
-    <div>
+
+
+
+
+
+
+    <div class="uno">
         <button id="btnInsert">INSERT</button>
-        <input type="text" name="bussines" id="obTyped" placeholder="bussines">
+        <input type="text" name="bussines" id="obTyped" placeholder="Bussines">
         <button id="btnSearch">SEARCH</button>
     </div>
     <script src="./Controllers/script.js" type="module"></script>
+
+
+
+
+
+
+    <h1>Bar Chart Example</h1>
+    <button id="showChartButton">Mostrar Grafica De Tiempos </button>
+
+    <div id="chart" style="display: none;"></div>
+
+    <table id="timeTable" border="1" style="display:none;">
+        <thead>
+            <tr>
+                <th>Operación</th>
+                <th>Tiempo (segundos)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Linked List</td>
+                <td id="linkedListTime"></td>
+            </tr>
+            <tr>
+                <td>Array</td>
+                <td id="arrayTime"></td>
+            </tr>
+            <tr>
+                <td>Linked List Search</td>
+                <td id="timeSearchList"></td>
+            </tr>
+            <tr>
+                <td>Array Search</td>
+                <td id="timeSearchArray"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h1>Algoritmos de ordenamiento con Array</h1>
+    <button id="btnBubble">Bubble sort</button>
+    <button id="btnMerge">Merge sort</button>
+    <button id="btnRadix">Radix Sort</button>
+
+    <button id="showArraySort">Mostrar Gráfica de Tiempos</button>
+
+    <div id="chart2" style="display: none;"></div>
+
+    <table id="timetableArraySort" border="1" style="display: none;">
+        <thead>
+            <tr>
+                <th>Operación</th>
+                <th>Tiempo de Ordenamiento (segundos)</th>
+                <th>Cantidad de Iteraciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Bubble Sort</td>
+                <td id="bubbleSortTime"></td>
+                <td id="bubbleSortIterations"></td>
+            </tr>
+            <tr>
+                <td>Merge Sort</td>
+                <td id="mergeSortTime"></td>
+                <td id="mergeSortIterations"></td>
+            </tr>
+            <tr>
+                <td>Radix Sort</td>
+                <td id="radixSortTime"></td>
+                <td id="radixSortIterations"></td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <script src="scrept.js"></script>
 </body>
 </html>

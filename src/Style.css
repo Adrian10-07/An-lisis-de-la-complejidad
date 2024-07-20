@@ -1,0 +1,27 @@
+*{
+    margin: 0;
+}
+header{
+    position: relative;
+    background-color: rgb(234, 49, 49);
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    font-size: 40px;
+    padding: 30px;
+}
+
+#btnInsert,#showChartButton,#btnSearch{
+    background-color: rgb(234, 49, 49);
+    border: none;
+    border-radius: 5px;
+    color: #ffffff;
+    position: relative;
+    transition: background-color 0.3s;
+    padding: 1em 7em ;
+}
+#obTyped{
+    padding: 1em 7em ;
+
+}
+
