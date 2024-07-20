@@ -75,43 +75,42 @@ const searchList = (obTyped) => {
     return false;
 }
 
-
-
 let btnBubble = document.getElementById('btnBubble');
 let btnMerge = document.getElementById('btnMerge');
+let btnRadix = document.getElementById('btnRadix');
 
-btnBubble.addEventListener('click', ()=> {
-    if (list.isEmpty() && array.length==0) {
+btnBubble.addEventListener('click', () => {
+    if (list.isEmpty() && array.length == 0) {
         alert('Primero tiene que insertar los datos');
     } else {
         console.log('click');
         bubbleSortArray(array);
-        list.bubbleSortL();
+        list.bubbleSortL(); // Asume que tienes esta función definida para linked list
     }
 });
 
 const bubbleSortArray = (array) => {
     let n = array.length;
-    let BubbleIterations = 0;  
+    let BubbleIterations = 0;
 
     let start = Date.now();
     for (let i = 0; i < n - 1; i++) {
-        let swapped = false;  
+        let swapped = false;
         for (let j = 0; j < n - i - 1; j++) {
-            BubbleIterations++;  
+            BubbleIterations++;
             if (array[j].review_count > array[j + 1].review_count) {
                 let temp = array[j];
                 array[j] = array[j + 1];
                 array[j + 1] = temp;
-                swapped = true;  
+                swapped = true;
             }
         }
-        if (!swapped) break; 
+        if (!swapped) break;
     }
     let end = Date.now();
     let Bubbletime = (end - start) / 1000;
-    localStorage.setItem('Bubbletime',Bubbletime);
-    localStorage.setItem('BubbleIterations',BubbleIterations);
+    localStorage.setItem('Bubbletime', Bubbletime);
+    localStorage.setItem('BubbleIterations', BubbleIterations);
     console.log('El tiempo de proceso en ARRAY fue de: ' + Bubbletime + ' segundos');
     console.log('Número de iteraciones: ' + BubbleIterations);
     console.log('Array ordenado:', array);
@@ -119,18 +118,18 @@ const bubbleSortArray = (array) => {
     return array;
 };
 
-btnMerge.addEventListener('click', ()=>{
-    if (list.isEmpty() && array.length==0) {
+btnMerge.addEventListener('click', () => {
+    if (list.isEmpty() && array.length == 0) {
         alert('Primero tiene que insertar los datos');
     } else {
         console.log('click');
         mergeSortArray(array);
-        //list.mergeSortLinked();
+        //list.mergeSortLinked(); // Asume que tienes esta función definida para linked list
     }
 });
 
 const mergeSortArray = (array) => {
-    let iterations = 0; 
+    let iterations = 0;
     let start = Date.now(); // Inicia el temporizador
 
     const mergeSort = (array) => {
@@ -169,13 +168,91 @@ const mergeSortArray = (array) => {
         return result;
     };
 
-    const Array = mergeSort(array);
-    let end = Date.now(); 
-    let time = (end - start) / 1000; 
+    const sortedArray = mergeSort(array);
+    let end = Date.now();
+    let time = (end - start) / 1000;
 
+    localStorage.setItem('Mergetime', time);
+    localStorage.setItem('MergeIterations', iterations);
     console.log('El tiempo de proceso en ARRAY fue de: ' + time + ' segundos');
     console.log('Número de iteraciones: ' + iterations);
-    console.log('Array ordenado:', Array); 
+    console.log('Array ordenado:', sortedArray);
 
-    return Array; 
+    return sortedArray;
+};
+
+// Agrega la lógica para Radix Sort aquí, similar a Bubble Sort y Merge Sort, y guarda los tiempos y las iteraciones en localStorage
+
+btnRadix.addEventListener('click', () => {
+    if (list.isEmpty() && array.length == 0) {
+        alert('Primero tiene que insertar los datos');
+    } else {
+        console.log('click');
+        radixSortArray(array);
+    }
+});
+
+const radixSortArray = (array) => {
+    let iterations = 0;
+    let start = Date.now();
+
+    // Función auxiliar para obtener el dígito más significativo
+    const getMax = (array) => {
+        let max = array[0].review_count;
+        for (let i = 1; i < array.length; i++) {
+            if (array[i].review_count > max) {
+                max = array[i].review_count;
+            }
+        }
+        return max;
+    };
+
+    // Función para realizar el counting sort basado en el dígito específico
+    const countingSort = (array, exp) => {
+        let n = array.length;
+        let output = new Array(n);
+        let count = new Array(10).fill(0);
+
+        for (let i = 0; i < n; i++) {
+            let index = Math.floor(array[i].review_count / exp) % 10;
+            count[index]++;
+        }
+
+        for (let i = 1; i < 10; i++) {
+            count[i] += count[i - 1];
+        }
+
+        for (let i = n - 1; i >= 0; i--) {
+            let index = Math.floor(array[i].review_count / exp) % 10;
+            output[count[index] - 1] = array[i];
+            count[index]--;
+            iterations++;
+        }
+
+        for (let i = 0; i < n; i++) {
+            array[i] = output[i];
+        }
+    };
+
+    const radixSort = (array) => {
+        let max = getMax(array);
+
+        for (let exp = 1; Math.floor(max / exp) > 0; exp *= 10) {
+            countingSort(array, exp);
+        }
+
+        return array;
+    };
+
+    const sortedArray = radixSort(array);
+    let end = Date.now();
+    let time = (end - start) / 1000;
+
+    localStorage.setItem('Radiixtime', time);
+    localStorage.setItem('RadixIterations', iterations);
+    console.log('El tiempo de proceso en ARRAY fue de: ' + time + ' segundos');
+    console.log('Número de iteraciones: ' + iterations);
+    console.log('Array ordenado:', sortedArray);
+
+    return sortedArray;
 };
