@@ -1,5 +1,4 @@
 import list from "./Dependencias.js";
-
 let btnInsert = document.getElementById('btnInsert');
 let btnSearch = document.getElementById('btnSearch');
 let array = [];
@@ -9,14 +8,18 @@ btnInsert.addEventListener('click', () => {
     fetch("./bussines.json")
         .then(response => response.json())
         .then(data => {
-            insLinked(data);
-            insArray(data);
+            if (Array.isArray(data)) {
+                insLinked(data);
+                insArray(data);
+            } else {
+                console.error('El formato de los datos no es un array.');
+            }
         });
 });
 
 function insLinked(data) {
     let start = Date.now();
-    for (let i = 0; i <= 150345; i++) {
+    for (let i = 0; i < data.length; i++) {
         list.push(data[i]);
     }
     console.log(list);
@@ -28,7 +31,7 @@ function insLinked(data) {
 
 function insArray(data) {
     let start = Date.now();
-    for (let i = 0; i <= 150345; i++) {
+    for (let i = 0; i < data.length; i++) {
         array.push(data[i]);
     }
     console.log(array);
@@ -50,31 +53,31 @@ btnSearch.addEventListener('click', () => {
 
 const searchArray = (obTyped) => {
     let start = Date.now();
-    for (let i=0; i<=150345; i++) {
+    for (let i = 0; i < array.length; i++) {
         if (obTyped == array[i].business) {
             let end = Date.now();
-            let timeSearchArray = (end - start)/1000;
+            let timeSearchArray = (end - start) / 1000;
             localStorage.setItem('timeSearchArray', timeSearchArray);
-            console.log('El tiempo de proceso en la Array fue de: '+timeSearchArray+ ' segundos, buscando: '+obTyped+' que se encuentra en la posición: '+[i]);
-            return true;
-        }                
-    }
-    return false;
-}
-const searchList = (obTyped) => {
-    let start = Date.now();
-    for (let i=0; i<=150345; i++) {
-        if (obTyped == list.getElementAt(i).data.business) {
-            let end = Date.now();
-            let timeSearchList = (end - start)/1000;    
-            localStorage.setItem('timeSearchList', timeSearchList);    
-            console.log('El tiempo de proceso en la Linked List fue: '+timeSearchList+ ' segundos, buscando  '+obTyped+' que se encunetra en la posición: '+[i]);
+            console.log('El tiempo de proceso en la Array fue de: ' + timeSearchArray + ' segundos, buscando: ' + obTyped + ' que se encuentra en la posición: ' + [i]);
             return true;
         }
     }
     return false;
 }
 
+const searchList = (obTyped) => {
+    let start = Date.now();
+    for (let i = 0; i < list.size(); i++) {
+        if (obTyped == list.getElementAt(i).data.business) {
+            let end = Date.now();
+            let timeSearchList = (end - start) / 1000;
+            localStorage.setItem('timeSearchList', timeSearchList);
+            console.log('El tiempo de proceso en la Linked List fue: ' + timeSearchList + ' segundos, buscando ' + obTyped + ' que se encuentra en la posición: ' + [i]);
+            return true;
+        }
+    }
+    return false;
+}
 
 let btnBubble = document.getElementById('btnBubble');
 let btnMerge = document.getElementById('btnMerge');
@@ -86,7 +89,7 @@ btnBubble.addEventListener('click', () => {
     } else {
         console.log('click');
         bubbleSortArray(array);
-        list.bubbleSortL(); // Asume que tienes esta función definida para linked list
+        list.bubbleSortL();
     }
 });
 
@@ -125,15 +128,20 @@ btnMerge.addEventListener('click', () => {
     } else {
         console.log('click');
         mergeSortArray(array);
-        list.mergeSortL(); // Asume que tienes esta función definida para linked list
+        list.mergeSortL();
     }
 });
 
 const mergeSortArray = (array) => {
-    let iterations = 0;
-    let start = Date.now(); // Inicia el temporizador
+    let MergeIterations = 0;
+    let start = Date.now();
 
     const mergeSort = (array) => {
+        if (!Array.isArray(array)) {
+            console.error('mergeSort: el parámetro no es un array.');
+            return [];
+        }
+
         let n = array.length;
         if (n < 2) return array;
 
@@ -141,14 +149,18 @@ const mergeSortArray = (array) => {
         const left = array.slice(0, mid);
         const right = array.slice(mid);
 
-        return merge(mergeSort(left), merge(mergeSort(right)));
+        return merge(mergeSort(left), mergeSort(right));
     };
 
     const merge = (left, right) => {
-        const result = [];
+        if (!Array.isArray(left) || !Array.isArray(right)) {
+            console.error('merge: uno de los parámetros no es un array.');
+            return [];
+        }
 
+        const result = [];
         while (left.length && right.length) {
-            iterations++;
+            MergeIterations++;
             if (left[0].review_count <= right[0].review_count) {
                 result.push(left.shift());
             } else {
@@ -157,12 +169,12 @@ const mergeSortArray = (array) => {
         }
 
         while (left.length) {
-            iterations++;
+            MergeIterations++;
             result.push(left.shift());
         }
 
         while (right.length) {
-            iterations++;
+            MergeIterations++;
             result.push(right.shift());
         }
 
@@ -174,14 +186,13 @@ const mergeSortArray = (array) => {
     let time = (end - start) / 1000;
 
     localStorage.setItem('Mergetime', time);
-    localStorage.setItem('MergeIterations', iterations);
+    localStorage.setItem('MergeIterations', MergeIterations);
     console.log('El tiempo de proceso en ARRAY fue de: ' + time + ' segundos');
-    console.log('Número de iteraciones: ' + iterations);
+    console.log('Número de iteraciones: ' + MergeIterations);
     console.log('Array ordenado:', sortedArray);
 
     return sortedArray;
 };
-
 
 btnRadix.addEventListener('click', () => {
     if (list.isEmpty() && array.length == 0) {
@@ -194,7 +205,7 @@ btnRadix.addEventListener('click', () => {
 });
 
 const radixSortArray = (array) => {
-    let iterations = 0;
+    let RadixIterations = 0;
     let start = Date.now();
 
     const getMax = (array) => {
@@ -225,7 +236,7 @@ const radixSortArray = (array) => {
             let index = Math.floor(array[i].review_count / exp) % 10;
             output[count[index] - 1] = array[i];
             count[index]--;
-            iterations++;
+            RadixIterations++;
         }
 
         for (let i = 0; i < n; i++) {
@@ -245,14 +256,13 @@ const radixSortArray = (array) => {
 
     const sortedArray = radixSort(array);
     let end = Date.now();
-    let time = (end - start) / 1000;
+    let Radixtime = (end - start) / 1000;
 
-    localStorage.setItem('Radiixtime', time);
-    localStorage.setItem('RadixIterations', iterations);
-    console.log('El tiempo de proceso en ARRAY fue de: ' + time + ' segundos');
-    console.log('Número de iteraciones: ' + iterations);
+    localStorage.setItem('RadixTime', Radixtime);
+    localStorage.setItem('RadixIterations', RadixIterations);
+    console.log('El tiempo de proceso en ARRAY fue de: ' + Radixtime + ' segundos');
+    console.log('Número de iteraciones: ' + RadixIterations);
     console.log('Array ordenado:', sortedArray);
 
     return sortedArray;
 };
-
